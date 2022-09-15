@@ -11,7 +11,7 @@ void main() async{
     debugShowCheckedModeBanner: false,
     home: DataUploaderScreen(),
   //
-    sfasfas
+  //   sfasfas
 
   ));
 }
