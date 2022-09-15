@@ -10,6 +10,8 @@ void main() async{
   runApp( GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: DataUploaderScreen(),
+  //
+    sfasfas
 
   ));
 }
