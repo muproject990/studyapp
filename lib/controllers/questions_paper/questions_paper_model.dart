@@ -61,7 +61,6 @@ class Questions {
             (json['answers'] as List).map((e) => Answers.fromJson(e)).toList(),
         correctAnswer = json['correct_answer'];
 
-  // ignore: unnecessary_this
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
