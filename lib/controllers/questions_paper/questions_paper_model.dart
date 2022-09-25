@@ -25,8 +25,10 @@ class QuestionPaperModel {
         description = json['Description'] as String,
         timeSeconds = json['time_seconds'],
         questions = (json['questions'] as List)
-            .map((dynamic e) => Questions.fromJson(e as Map<String, dynamic>))
+            .map((e) => Questions.fromJson(e))
             .toList();
+  // .map((dynamic e) => Questions.fromJson(e as Map<String, dynamic>))
+  //           .toList();
 
   // we casted it to dynamic becaouse it takes maps
 

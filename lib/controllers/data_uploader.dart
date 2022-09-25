@@ -15,20 +15,21 @@ class DataUploader extends GetxController {
   }
 
   final loadingStatus=LoadingStatus.loading.obs;
-  //loadingStaus is observable
+  //loadingStatus is observable
 
 
   void uploadData() async {
     loadingStatus.value=LoadingStatus.loading;
     final fireStore=FirebaseFirestore.instance;
 
-    final manifestContent = await DefaultAssetBundle.of(Get.context!)
-        .loadString("AssetManifest.json");
+    final manifestContent=await DefaultAssetBundle.of(Get.context!).loadString('AssetManifest.json');
     final Map<String, dynamic> manifestMap = json.decode(manifestContent);
     final papersInAsset = manifestMap.keys
         .where((path) =>
             path.startsWith("assets/DB/papers") && path.contains(".json"))
         .toList();
+
+
 
     List<QuestionPaperModel> questionPapers = [];
 
@@ -36,20 +37,25 @@ class DataUploader extends GetxController {
       String stringPaperContent = await rootBundle.loadString(paper);
       questionPapers
           .add(QuestionPaperModel.fromJson(json.decode(stringPaperContent)));
+
     }
-    // print("Item no ${questionPapers[0].description}");
+
     var batch=fireStore.batch();
 
     for(var paper in questionPapers){
-    batch.set(questionPaperRF.doc(paper.id), {
+    batch.set(fireStore.collection("questionPaper").doc(paper.id), {
+
       "title":paper.title,
       "image_url":paper.imageUrl,
       "description":paper.description,
       "questions_count":paper.questions==null?0:paper.questions!.length
     });
-    for(var questions in paper.questions!){
-      final  questionPath=questionRF(paperId: paper.id, questionId: questions.id);
 
+
+    for(var questions in paper.questions!){
+
+      final  questionPath=questionRF(paperId: paper.id, questionId: questions.id);
+      //questionPath=DocumentReference<Map<String, dynamic>>(questionPaper/ppr003/questions/ppr003q002)
       batch.set(questionPath, {
         "question":questions.question,
         "correct_answer":questions.correctAnswer
@@ -68,7 +74,7 @@ class DataUploader extends GetxController {
 
     }
     }
-await batch.commit();
+// await batch.commit();
 loadingStatus.value=LoadingStatus.completed;
   }
 }
